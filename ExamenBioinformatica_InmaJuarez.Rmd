@@ -1,0 +1,53 @@
+---
+title: "Examen Bioinformatica 2022"
+author: "Inma Juarez"
+date: "31/1/2022"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+### 1. 
+
+
+
+
+### 2.
+
+
+
+
+### 3.
+
+
+
+
+
+### 4. 
+
+
+
+### 5.
+
+
+
+
+### 6. 
+
+
+
+
+
+
+### URL 
+
+https://github.com/Inmajg24/ExamenBioinformatica_2022.git
+
+
+### Session Info
+```{r}
+sessionInfo()
+```
+
