@@ -42,6 +42,9 @@ print(paste0("El dateset tiene ", nrow(weather), " registros y ", ncol(weather),
 ```{r}
 table(weather$origin)
 ```
+Podemos observar 3 origenes distintos que corresponden a tres aeropuertos diferentes. El aeropuerto EWR tiene 8703 registros, el JFK tiene 8706 registros y el LGA tiene 8706 registros. 
+
+
 ##### c)  En LGA, ¿cuáles fueron la mediana del wind_speed y media de pressure ? 
 
 ```{r}
@@ -59,11 +62,22 @@ print(paste0("La media de pressure en LGA es ", mean(LGA$pressure, na.rm = T)))
 ##### d)Después de eliminar los NA de la columna wind_gust, calcula para cada mes la media de wind_speed y wind_gust, y el número de casos.
 
 ```{r}
-cumpleaños2 <- filter(cumple, origin=="JFK" | origin == "LGA")
-boxplot(cumpleaños2$temp ~ cumpleaños2$origin)
-t.test(cumpleaños2$temp ~ cumpleaños2$origin)
 
+weather2 <- weather[complete.cases(weather),]
+media_wg <- 0
+media_ws <-0
 
+for(x in 1:12) {
+  wg <- weather2[,c("month", "wind_gust")]
+  ws <- weather2[, c("month", "wind_speed")]
+  media_wg[x] <- mean(wg$month== x)
+  media_ws[x] <- mean(ws$month== x)
+  print(paste0("En el mes ", x , " la media de wind gust es ", media_wg[x]," y la media de wind speed es ", media_ws[x]))
+  
+}
+
+nrow(weather2)
+print(paste0( "El numero de casos una vez que eliminamos los NA  es ", nrow(weather2) ))
 
 ```
 
@@ -173,17 +187,22 @@ ggplot(cumpleañosJFK, aes( x = temp, y = humid, col=temp)) +
 
 
 ```{r}
+cumple <- weather[weather$month == 2 & weather$day == 24,]
+
+cumple2 <- filter(cumple, origin=="JFK" | origin == "LGA")
+boxplot(cumple2$temp ~ cumple2$origin, main =" Comparación Temperaturas", xlab= "Aeropuerto", ylab = "Temperatura", col = "aquamarine3")
+t.test(cumple2$temp ~ cumple2$origin) 
 
 ```
 
-
+Hemos obtenido un pvalue de 0.545 por lo que no se observan diferencias significativas, es decir no son estadisticamente diferentes. 
 
 ### 5. Volcano plot
 
 a) El punto con Fc mayor en valores absolutos, es el punto con las coordenadas (-9, 5). Está dentro de los dowregulated (color morado). 
 
 
-b) Rbp1 es el gen sobreexpresado más significativo. 
+b) Csn1s2b es el gen sobreexpresado más significativo, es un gen dowregulated. 
 
 
 
