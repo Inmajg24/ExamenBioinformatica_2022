@@ -119,6 +119,7 @@ plot_meteo <- function(data,columna,titulo, unidades)
   x <-y[,columna] 
   boxplot(x ~ y$month, type ="l", ylab = unidades, xlab= "Months",col="blue", main = titulo)
   media <- c(mean(EWR$temp,na.rm=T),mean(LGA$temp,na.rm=T),mean(JFK$temp,na.rm=T))
+             names(media) <- c("EWR", "LGA", "JFK")
 
   return(media)
   print(media)  
@@ -141,7 +142,8 @@ plot_meteo <- function(data,columna,titulo, unidades)
   y <- data.frame(data)
   x <-y[,columna] 
   boxplot(x ~ y$month, type ="l", ylab = unidades, xlab= "Months",col="blue", main = titulo)
-  media <- c(mean(EWR$humid,na.rm=T),mean(LGA$humid,na.rm=T),mean(JFK$humid,na.rm=T))
+  media <- c(mean(EWR$humid,na.rm=T),mean(LGA$humid,na.rm=T),mean(JFK$humid,na.rm=T))  
+  names(media) <- c("EWR", "LGA", "JFK")
 
   return(media)
   print(media)  
