@@ -181,6 +181,8 @@ cor(cumpleañosJFK$temp, cumpleañosJFK$humid)
 print(paste0("La correlacion entre temperatura y humedad en JFK el dia de mi cumpleaños fue ", cor(cumpleañosJFK$temp, cumpleañosJFK$humid) ))
 ggplot(cumpleañosJFK, aes( x = temp, y = humid, col=temp)) +
   geom_point()+ xlab ("Temperatura")+ ylab("Humedad")
+
+
 ```
 
 
