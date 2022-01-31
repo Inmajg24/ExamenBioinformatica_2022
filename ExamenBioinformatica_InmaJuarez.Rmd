@@ -9,35 +9,181 @@ output: html_document
 knitr::opts_chunk$set(echo = TRUE)
 ```
 
-### 1. 
+```{r}
+
+library(nycflights13)
+library(tidyverse)
+library(ggplot2)
+weather <- nycflights13::weather
+```
+
+
+### 1. Comandos Linux
+
+a) cat genes.txt | wc  (Las palabras que hay es el segundo resultado que nos devuelve)
+b) cat genes.txt | sed 's/_/-/g'  
+c) cat genes.txt | sed 's/_/-/'
+d) cat genes.txt | grep -v DSTYK
+
+
+
+### 2.Preguntas básicas
+
+##### a)¿ Cuantas columnas y registros hay?
+
+```{r}
+nrow(weather)
+ncol(weather)
+
+print(paste0("El dateset tiene ", nrow(weather), " registros y ", ncol(weather), " columnas."))
+```
+##### b)  ¿Cuántos “origin” diferentes existen y para cada uno de ellos cuántos registros hay?
+
+```{r}
+table(weather$origin)
+```
+##### c)  En LGA, ¿cuáles fueron la mediana del wind_speed y media de pressure ? 
+
+```{r}
+LGA <- weather[weather$origin == "LGA", ]
+
+median(LGA$wind_speed)
+print(paste0( "La mediana de wind_spreed  en LGA es ", median(LGA$wind_speed) ))
+
+
+mean(LGA$pressure, na.rm = T)
+print(paste0("La media de pressure en LGA es ", mean(LGA$pressure, na.rm = T)))
+
+```
+
+##### d)Después de eliminar los NA de la columna wind_gust, calcula para cada mes la media de wind_speed y wind_gust, y el número de casos.
+
+```{r}
+cumpleaños2 <- filter(cumple, origin=="JFK" | origin == "LGA")
+boxplot(cumpleaños2$temp ~ cumpleaños2$origin)
+t.test(cumpleaños2$temp ~ cumpleaños2$origin)
+
+
+
+```
+
+
+### 3.Crea es siguiente plot:
+
+```{r}
+JFK <- weather[weather$origin == "JFK", ]
+EWR <- weather[weather$origin == "EWR", ]
+
+boxplot(LGA$temp ~ LGA$month,
+     col = "blue",
+     main = "LGA",
+     xlab = "Months",
+     ylab = "Cº")
+
+boxplot(EWR$temp ~ EWR$month,
+     col = "red",
+     main = "EWR",
+     xlab = "Months",
+     ylab = "Cº")
+
+boxplot(JFK$temp ~ JFK$month,
+     col = "green",
+     main = "JFK",
+     xlab = "Months",
+     ylab = "Cº")
+
+
+
+```
+
+##### b) Funcion 
+
+```{r}
+plot_meteo <- function(data,columna,titulo, unidades)
+{
+  y <- data.frame(data)
+  x <-y[,columna] 
+  boxplot(x ~ y$month, type ="l", ylab = unidades, xlab= "Months",col="blue", main = titulo)
+  media <- c(mean(EWR$temp,na.rm=T),mean(LGA$temp,na.rm=T),mean(JFK$temp,na.rm=T))
+
+  return(media)
+  print(media)  
+
+}
+
+
+plot_meteo(weather,"temp", "Punto de Rocío", "Fº")
 
 
 
 
-### 2.
+```
+
+
+##### Segundo ejemplo:
+```{r}
+plot_meteo <- function(data,columna,titulo, unidades)
+{
+  y <- data.frame(data)
+  x <-y[,columna] 
+  boxplot(x ~ y$month, type ="l", ylab = unidades, xlab= "Months",col="blue", main = titulo)
+  media <- c(mean(EWR$humid,na.rm=T),mean(LGA$humid,na.rm=T),mean(JFK$humid,na.rm=T))
+
+  return(media)
+  print(media)  
+
+}
+
+
+plot_meteo(weather,"humid", "Humedad", "Relative Humidity")
+
+```
+
+
+### 4. a) El dia de tu cumpleaños,¿ Qué correlación tuvieron la temperatura y humedad en cada uno de los origin? 
+
+
+```{r}
+library(ggplot2)
+
+cumpleañosLGA <- LGA[LGA$month == 2 & LGA$day == 24,]
+cor(cumpleañosLGA$temp, cumpleañosLGA$humid)
+print(paste0("La correlacion entre temperatura y humedad en LGA el dia de mi cumpleaños fue ", cor(cumpleañosLGA$temp, cumpleañosLGA$humid) ))
+ggplot(cumpleañosLGA, aes( x = temp, y = humid, col=temp)) +
+  geom_point()+ xlab ("Temperatura")+ ylab("Humedad")
+
+
+cumpleañosEWR <- EWR[EWR$month == 2 & EWR$day == 24,]
+cor(cumpleañosEWR$temp, cumpleañosEWR$humid)
+print(paste0("La correlacion entre temperatura y humedad en EWR el dia de mi cumpleaños fue ", cor(cumpleañosEWR$temp, cumpleañosEWR$humid) ))
+ggplot(cumpleañosEWR, aes( x = temp, y = humid, col=temp)) +
+  geom_point()+ xlab ("Temperatura")+ ylab("Humedad")
+
+
+cumpleañosJFK <- JFK[JFK$month == 2 & JFK$day == 24,]
+cor(cumpleañosJFK$temp, cumpleañosJFK$humid)
+print(paste0("La correlacion entre temperatura y humedad en JFK el dia de mi cumpleaños fue ", cor(cumpleañosJFK$temp, cumpleañosJFK$humid) ))
+ggplot(cumpleañosJFK, aes( x = temp, y = humid, col=temp)) +
+  geom_point()+ xlab ("Temperatura")+ ylab("Humedad")
+```
 
 
 
-
-### 3.
-
+##### b) Si comparas la temperatura en origins JFK y LGA ¿son estadísticamente diferentes? ¿Qué p-valor consigues? Plotea los boxplots
 
 
+```{r}
 
-
-### 4. 
+```
 
 
 
-### 5.
+### 5. Volcano plot
+
+a) El punto con Fc mayor en valores absolutos, es el punto con las coordenadas (-9, 5). Está dentro de los dowregulated (color morado). 
 
 
-
-
-### 6. 
-
-
-
+b) Rbp1 es el gen sobreexpresado más significativo. 
 
 
 
